@@ -1,103 +1,188 @@
-# AIAAIC ML-Enriched AI Incident Analysis Dashboard
+# AIAAIC ML-Enriched AI Incident Analysis
 
-This repository contains the complete implementation of the **AIAAIC ML-Enriched AI Incident Analysis** project. The project addresses data gaps in the AIAAIC database by training machine learning models to predict missing harm categories and introducing a new **Affected Party** classification.
+A structured re-analysis of the [AIAAIC database](https://www.aiaaic.org/aiaaic-repository) (2,247 AI incidents, 2008–2026). Machine learning models fill the critical harm fields that are blank in the majority of raw records, and the results are presented in an interactive research dashboard.
 
-## Project Structure
+---
 
-```text
+## How it works
+
+```
+AIAAIC_Repository.xlsx
+        │
+        ▼
+ src/data_cleaning.py          ──▶  data/interim/aiaaic_clean.csv
+        │
+        ▼
+ notebooks/03_harm_classifier.ipynb    ──▶  models/harm_individual_clf.joblib
+ notebooks/04_affected_party.ipynb     ──▶  models/harm_societal_clf.joblib
+                                            models/affected_party_clf.joblib
+        │
+        ▼
+ notebooks/05_final_analysis.ipynb     ──▶  data/processed/aiaaic_enriched.csv
+        │
+        ▼
+ scripts/generate_web_data.py          ──▶  web/data.js
+        │
+        ▼
+ web/index.html  ◀──  web/*.jsx / app.css
+        │
+        ▼
+  http://localhost:8502
+```
+
+**What each ML model does:**
+
+| Model | Task | Training data | Missing rate |
+|---|---|---|---|
+| `harm_individual_clf` | Predict individual-level harm types | ~36% of records | 64% |
+| `harm_societal_clf` | Predict societal-level harm types | ~40% of records | 60% |
+| `affected_party_clf` | Classify affected community group | 300 manually labelled records | 100% (new field) |
+
+---
+
+## Project structure
+
+```
 ├── data/
 │   ├── raw/
-│   │   └── AIAAIC_Repository.xlsx     # Original dataset
+│   │   └── AIAAIC_Repository.xlsx        # Original dataset (not pushed to git)
 │   ├── interim/
-│   │   ├── aiaaic_clean.csv           # Cleaned dataset
-│   │   ├── manual_labels_template.csv # Labeling template
-│   │   └── manual_labels.csv          # Manual/Heuristic annotations
+│   │   ├── aiaaic_clean.csv              # Cleaned dataset
+│   │   ├── manual_labels.csv             # 300 hand-labelled affected-party records
+│   │   └── scraped_text.csv              # Supplementary scraped article text
 │   └── processed/
-│       └── aiaaic_enriched.csv        # Final ML-enriched dataset
+│       └── aiaaic_enriched.csv           # Final ML-enriched dataset
+│
+├── models/                               # Trained classifiers (not pushed to git)
+│   ├── harm_individual_clf.joblib
+│   ├── harm_societal_clf.joblib
+│   └── affected_party_clf.joblib
 │
 ├── notebooks/
-│   ├── 01_data_exploration.ipynb      # Initial exploratory analysis
-│   ├── 02_data_cleaning.ipynb         # Cleaning validations
-│   ├── 03_harm_classifier.ipynb       # Trains Harm_Individual & Harm_Societal
-│   ├── 04_affected_party.ipynb        # Trains Affected Party Classifier
-│   └── 05_final_analysis.ipynb        # Performs enrichment & hypothesis tests
+│   ├── 01_data_exploration.ipynb         # Exploratory analysis & missingness
+│   ├── 02_data_cleaning.ipynb            # Cleaning pipeline
+│   ├── 03_harm_classifier.ipynb          # Train Harm_Individual & Harm_Societal
+│   ├── 04_affected_party.ipynb           # Train Affected Party classifier
+│   └── 05_final_analysis.ipynb           # Enrichment + hypothesis tests
 │
 ├── src/
-│   ├── config.py                      # Directories & path configurations
-│   ├── data_cleaning.py               # Data cleaning logic
-│   ├── text_features.py               # TF-IDF Feature engineering functions
+│   ├── config.py                         # Paths & constants
+│   ├── data_cleaning.py                  # Cleaning logic
+│   ├── text_features.py                  # TF-IDF feature engineering
 │   └── models/
-│       ├── harm_classifier.py         # Harm classification module
-│       ├── affected_party.py          # Affected Party classification module
-│       └── evaluation.py              # Performance evaluation metrics
+│       ├── harm_classifier.py            # HarmClassifier class
+│       ├── affected_party.py             # AffectedPartyClassifier class
+│       └── evaluation.py                 # Metrics & reporting
 │
-├── app/
-│   ├── main.py                        # Streamlit app home page
-│   ├── pages/                         # Multi-page dashboard layouts
-│   └── utils/                         # Caching loaders & visualizations
+├── scripts/
+│   └── generate_web_data.py              # Converts enriched CSV → web/data.js
+│
+├── web/                                  # Interactive dashboard
+│   ├── index.html
+│   ├── app.css
+│   ├── data.js                           # Generated — do not edit by hand
+│   ├── charts.jsx                        # Plotly chart components
+│   ├── ui.jsx                            # Shared UI primitives
+│   ├── pages_a.jsx                       # Home, Overview, Company Profiles
+│   ├── pages_b.jsx                       # Incident Browser, Who Gets Harmed, ML, Compare
+│   └── main.jsx                          # App shell & routing
 │
 ├── reports/
-│   └── final_report.md                # Final academic research paper
+│   └── final_report.md                   # Academic report
 │
-└── requirements.txt                   # Dependency list
+└── requirements.txt
 ```
 
-## Quick Start & Installation
+---
 
-### 1. Set Up Virtual Environment
+## Quick start
 
-Create and activate a Python virtual environment:
+### 1. Clone & install
 
 ```bash
-# Create
+git clone https://github.com/<your-username>/aiaaic-ml-enrichment.git
+cd aiaaic-ml-enrichment
+
 python3 -m venv venv
-
-# Activate (macOS / Linux)
-source venv/bin/activate
-
-# Activate (Windows)
-venv\Scripts\activate
-```
-
-### 2. Install Dependencies
-
-```bash
+source venv/bin/activate       # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 3. Run the Data & Training Pipeline
+### 2. Add the raw data
 
-To build and run the entire pipeline from scratch, run the scripts in order:
+Download `AIAAIC_Repository.xlsx` from [aiaaic.org](https://www.aiaaic.org/aiaaic-repository) and place it at:
+
+```
+data/raw/AIAAIC_Repository.xlsx
+```
+
+### 3. Run the pipeline
 
 ```bash
-# 1. Create project directories & copy raw Excel file
-python3 src/config.py
-
-# 2. Clean the raw Excel file
+# Clean the raw data
 python3 src/data_cleaning.py
 
-# 3. Create the stratified sample and labeling template
-python3 scripts/sample_for_labeling.py
+# Run the notebooks in order (trains models + produces enriched CSV)
+jupyter nbconvert --to notebook --execute --inplace notebooks/02_data_cleaning.ipynb
+jupyter nbconvert --to notebook --execute --inplace notebooks/03_harm_classifier.ipynb
+jupyter nbconvert --to notebook --execute --inplace notebooks/04_affected_party.ipynb
+jupyter nbconvert --to notebook --execute --inplace notebooks/05_final_analysis.ipynb
 
-# 4. Generate heuristic/keyword labels for the training set
-python3 scripts/generate_heuristic_labels.py
-
-# 5. Build and execute Jupyter notebooks (trains models, enriches data, runs hypotheses)
-jupyter nbconvert --to notebook --execute --inplace notebooks/*.ipynb
+# Generate the dashboard data file
+python3 scripts/generate_web_data.py
 ```
 
-### 4. Run the Streamlit Dashboard
-
-Launch the interactive dashboard locally:
+### 4. Open the dashboard
 
 ```bash
-streamlit run app/main.py
+cd web && python3 -m http.server 8502
 ```
 
-Open `http://localhost:8501` in your browser.
+Open **http://localhost:8502** in your browser.
 
-## Key Research Findings
+> The dashboard requires a local HTTP server — opening `index.html` directly as a file will not work.
 
-- **Sector Concentration:** Chi-square test indicates a highly statistically significant correlation between the industry sector of deployment and the group of people harmed ($p < 0.0001$).
-- **Developer Oligopoly:** Top 5 developers account for over 34% of all AI incidents, with OpenAI leading at 10.5%.
-- **Policy Enforcement Gap:** Over 74% of incidents in the database lack documented legal consequences, highlighting the critical necessity for active regulation.
+---
+
+## Dashboard pages
+
+| # | Page | What it shows |
+|---|---|---|
+| 00 | Home | Study overview and data integrity summary |
+| 01 | Overview | Yearly trends, top developers, sector map, choropleth |
+| 02 | Company Profiles | Per-developer incident history and harm fingerprint |
+| 03 | Incident Browser | Searchable, filterable record inspector with provenance |
+| 04 | Who Gets Harmed | Demographic load, sector × group heatmap, time trends |
+| 05 | ML Performance | Per-model and per-class F1, precision, recall |
+| 06 | Comparative Analysis | Side-by-side radar and timeline for any two entities |
+
+---
+
+## Key findings
+
+- **Sector concentration** — Chi-square test shows a statistically significant link between deployment sector and which group is harmed (*p* < 0.0001).
+- **Developer oligopoly** — Top 5 developers account for 34 %+ of all incidents; OpenAI leads at 10.5 %.
+- **Enforcement gap** — 74 %+ of incidents have no documented legal consequence.
+- **Generative AI surge** — Incidents involving generative AI (LLM, image generation) roughly doubled each year from 2022–2024.
+
+---
+
+## ML performance (held-out test split)
+
+| Model | Macro F1 | Micro F1 |
+|---|---|---|
+| Individual Harm Classifier | 0.493 | 0.604 |
+| Societal Harm Classifier | 0.502 | 0.565 |
+| Affected Party Classifier | 0.643 | 0.691 |
+
+All predicted values are flagged separately in the dashboard — original AIAAIC labels and ML-imputed labels are always visually distinct.
+
+---
+
+## References
+
+Agarwal, A., & Nene, M. J. (2025). *Standardised schema and taxonomy for AI incident databases.* arXiv:2501.17037  
+Slattery, P. et al. (2024). *The AI Risk Repository.* arXiv:2408.12622  
+Eubanks, V. (2018). *Automating Inequality.* St. Martin's Press  
+Benjamin, R. (2019). *Race After Technology.* Polity Press  
+Noble, S. U. (2018). *Algorithms of Oppression.* NYU Press
