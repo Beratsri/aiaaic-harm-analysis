@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Project specific data & models (large files)
+data/raw/AIAAIC_Repository.xlsx
+data/interim/*.csv
+data/processed/*.csv
+models/*.joblib
+
+# OS generated
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
