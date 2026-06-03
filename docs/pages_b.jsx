@@ -31,7 +31,7 @@ function BrowserPage() {
   return (
     <div className="page fade-in">
       <PageHead eyebrow="Records · 03" title="Incident Browser"
-        lede={`A searchable inspector over the catalogue. Combine filters, search the narrative text, then select any row to open its fully-provenanced record. Showing a representative sample of the ${fmt(d.kpi.totalIncidents)} incidents.`} />
+        lede={`A searchable inspector over the catalogue. Combine filters, search the narrative text, then select any row to open its fully-provenanced record. Showing all ${fmt(d.kpi.totalIncidents)} incidents.`} />
 
       <div className="controls" style={{ marginBottom: 8, alignItems: "flex-end" }}>
         <Field label="Year"><Select value={f.year} onChange={set("year")} options={years} width={110} /></Field>
