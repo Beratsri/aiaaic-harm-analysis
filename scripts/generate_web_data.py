@@ -136,8 +136,8 @@ def main():
     # ── ML performance metrics ────────────────────────────────────────────────
     ml_data = _get_ml_metrics(df, harm_types, societal_harms, groups)
 
-    # ── Incident sample (100 real incidents) ─────────────────────────────────
-    incidents = _build_incidents(df, 100)
+    # ── All real incidents ────────────────────────────────────────────────────
+    incidents = _build_incidents(df, len(df))
 
     # ── Assemble and write ────────────────────────────────────────────────────
     data = {
@@ -269,7 +269,7 @@ def _get_ml_metrics(df, harm_types, societal_harms, groups):
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _build_incidents(df, n):
-    sample = df.dropna(subset=["Headline"]).sample(min(n, len(df)), random_state=42)
+    sample = df.dropna(subset=["Headline"]).head(n)
     out = []
     for i, (_, row) in enumerate(sample.iterrows()):
         yr = int(row["Year"]) if pd.notna(row["Year"]) else 2020
