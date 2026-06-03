@@ -138,7 +138,7 @@ python3 scripts/generate_web_data.py
 cd web && python3 -m http.server 8502
 ```
 
-Open **http://localhost:8502** in your browser.
+Open **http://localhost:8502** in your browser
 or simply on **https://beratsri.github.io/aiaaic-harm-analysis/**
 
 > The dashboard requires a local HTTP server — opening `index.html` directly as a file will not work.
