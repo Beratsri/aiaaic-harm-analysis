@@ -311,4 +311,146 @@ function ComparePage() {
   );
 }
 
-Object.assign(window, { BrowserPage, HarmedPage, MLPage, ComparePage });
+/* ---------------- CORPORATE ACCOUNTABILITY ---------------- */
+function AccountabilityPage() {
+  const d = window.DATA;
+  const ac = d.accountability;
+  const [view, setView] = React.useState("accountable");
+
+  const avgSilence = ac.scatter.reduce(function(s, c) { return s + c.silenceRate; }, 0) / ac.scatter.length;
+
+  const rankData = view === "accountable"
+    ? ac.topAccountable.slice().reverse()
+    : ac.topSilent.slice().reverse();
+
+  const scatterTrace = {
+    type: "scatter", mode: "markers",
+    x: ac.scatter.map(function(c) { return c.incidents; }),
+    y: ac.scatter.map(function(c) { return Math.round(c.silenceRate * 100); }),
+    text: ac.scatter.map(function(c) { return c.name; }),
+    marker: {
+      size: ac.scatter.map(function(c) { return Math.max(6, Math.min(32, Math.sqrt(c.incidents) * 3)); }),
+      color: ac.scatter.map(function(c) { return c.avgResponseScore; }),
+      cmin: 0, cmax: 4,
+      colorscale: [[0, "#d4807f"], [0.25, "#c09060"], [0.5, "#d6b061"], [0.75, "#a0b07a"], [1, "#84b389"]],
+      showscale: true,
+      colorbar: {
+        title: { text: "response score", font: { family: '"IBM Plex Mono",monospace', size: 10, color: "#7c7f84" }, side: "right" },
+        thickness: 10, len: 0.75, outlinewidth: 0, x: 1.02,
+        tickfont: { family: '"IBM Plex Mono",monospace', size: 10, color: "#7c7f84" },
+        tickvals: [0, 1, 2, 3, 4], ticktext: ["0 silent", "1", "2", "3", "4 strong"]
+      },
+      line: { color: "#181b20", width: 0.5 }
+    },
+    hovertemplate: "<b>%{text}</b><br>Incidents: %{x}<br>No response: %{y}%<br>Response score: %{marker.color:.2f}<extra></extra>"
+  };
+
+  const scatterLayout = {
+    font: { family: '"IBM Plex Sans",system-ui,sans-serif', size: 13, color: "#aeb0b3" },
+    paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)",
+    margin: { l: 60, r: 90, t: 14, b: 52 },
+    hoverlabel: { bgcolor: "#20242b", bordercolor: "#3a4049", font: { family: '"IBM Plex Mono",monospace', size: 12, color: "#e9e7e1" } },
+    xaxis: {
+      title: { text: "Total incidents (log scale)", font: { size: 11, color: "#7c7f84" } },
+      type: "log", gridcolor: "#282d34", zerolinecolor: "#3a4049",
+      tickfont: { family: '"IBM Plex Mono",monospace', size: 11, color: "#7c7f84" }, automargin: true
+    },
+    yaxis: {
+      title: { text: "Silence rate (%)", font: { size: 11, color: "#7c7f84" } },
+      gridcolor: "#282d34", zerolinecolor: "#3a4049",
+      tickfont: { family: '"IBM Plex Mono",monospace', size: 11, color: "#7c7f84" },
+      ticksuffix: "%", automargin: true
+    }
+  };
+
+  return (
+    <div className="page fade-in">
+      <PageHead eyebrow="Corporate Accountability · 07" title="Corporate Accountability Index"
+        lede="Which organisations go silent after an AI incident — and which take responsibility? Scores are derived from the documented Response and Consequence fields across all records. Higher response score means stronger corrective action." />
+
+      <Section>
+        <div className="grid grid-4">
+          <KPI label="Companies analysed" value={fmt(ac.scatter.length)} meta="Min. 3 incidents" />
+          <KPI label="Most silent" value={ac.topSilent[0] ? ac.topSilent[0].name : "—"}
+            meta={ac.topSilent[0] ? pct(ac.topSilent[0].silenceRate) + " no response" : ""}
+            accent="var(--oxblood)" />
+          <KPI label="Most accountable" value={ac.topAccountable[0] ? ac.topAccountable[0].name : "—"}
+            meta={ac.topAccountable[0] ? "Score " + ac.topAccountable[0].avgResponseScore.toFixed(2) + " / 4" : ""}
+            accent="var(--moss)" />
+          <KPI label="Avg silence rate" value={pct(avgSilence)} meta="Across all companies" accent="var(--ochre)" />
+        </div>
+      </Section>
+
+      <Section title="Corporate Silence Map"
+        note="Each bubble is a company (size ∝ incident count). X-axis: total incidents (log). Y-axis: % of incidents with no documented response. Colour: average response quality — red = silent, green = accountable.">
+        <Card pad>
+          <Chart data={[scatterTrace]} layout={scatterLayout} height={440} />
+        </Card>
+      </Section>
+
+      <Section title="Accountability ranking"
+        note={view === "accountable"
+          ? "Sorted by average response quality (0 = silent, 4 = strongest action). Min. 5 incidents."
+          : "Sorted by silence rate — % of incidents with no documented response. Min. 5 incidents."}
+        right={<Field label="View"><Segmented value={view} onChange={setView} options={["accountable", "silent"]} /></Field>}>
+        <div className="grid" style={{ gridTemplateColumns: "1.2fr 1fr" }}>
+          <Card pad>
+            <BarChart
+              labels={rankData.map(function(c) { return c.name; })}
+              values={view === "accountable"
+                ? rankData.map(function(c) { return c.avgResponseScore; })
+                : rankData.map(function(c) { return Math.round(c.silenceRate * 100); })}
+              color={view === "accountable" ? "#84b389" : "#d4807f"}
+              height={400}
+            />
+          </Card>
+          <Card>
+            <div className="table-wrap">
+              <table className="data">
+                <thead>
+                  <tr>
+                    <th>#</th><th>Company</th><th>Incidents</th>
+                    <th>{view === "accountable" ? "Score /4" : "Silent %"}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rankData.slice().reverse().map(function(c, i) {
+                    return (
+                      <tr key={c.name}>
+                        <td className="num">{i + 1}</td>
+                        <td><span className="strong">{c.name}</span></td>
+                        <td className="num">{fmt(c.incidents)}</td>
+                        <td className="num">
+                          {view === "accountable"
+                            ? c.avgResponseScore.toFixed(2)
+                            : Math.round(c.silenceRate * 100) + "%"}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
+      </Section>
+
+      <Section title="Methodology note">
+        <Card pad>
+          <div className="prose" style={{ fontSize: 14, color: "var(--ink-soft)", lineHeight: 1.7 }}>
+            <p><strong style={{ color: "var(--ink)" }}>Response score (0–4):</strong> Derived from the AIAAIC Response field.
+              Silent (no entry) = 0. Minor updates = 1. Policy or suspension actions = 2.
+              Terminations and recalls = 3. Public apology = 4. Multi-valued responses take the highest score.</p>
+            <p><strong style={{ color: "var(--ink)" }}>Silence rate:</strong> Proportion of a company's incidents where no
+              Response was recorded in the AIAAIC database. A high rate indicates the organisation did not publicly
+              acknowledge or address the incident.</p>
+            <p><strong style={{ color: "var(--ink)" }}>Inclusion criteria:</strong> Companies with fewer than 5 incidents are
+              excluded from the rankings (statistically unreliable). The scatter includes all companies with ≥ 3 incidents.</p>
+          </div>
+        </Card>
+      </Section>
+    </div>
+  );
+}
+
+Object.assign(window, { BrowserPage, HarmedPage, MLPage, ComparePage, AccountabilityPage });

@@ -50,7 +50,7 @@ function HomePage() {
         </div>
       </Section>
 
-      <Section title="How to read this atlas" note="Seven views, from macroscopic distributions down to a single audited incident.">
+      <Section title="How to read this atlas" note="Eight views, from macroscopic distributions down to a single audited incident.">
         <div className="grid grid-3">
           {NAV.slice(1).map((n) => (
             <div className="card card-pad" key={n.id} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
@@ -72,7 +72,8 @@ const PAGE_BLURB = {
   browser: "Search, filter and inspect any record with full provenance.",
   harmed: "Which communities bear the load, in which sectors, over time.",
   ml: "Per-model and per-class performance of the enrichment pipeline.",
-  compare: "Set two developers, sectors or countries side by side."
+  compare: "Set two developers, sectors or countries side by side.",
+  accountability: "Which tech giants go silent after an incident — and which take responsibility."
 };
 
 /* ---------------- OVERVIEW ---------------- */

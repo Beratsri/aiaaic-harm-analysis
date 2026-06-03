@@ -139,6 +139,9 @@ def main():
     # ── All real incidents ────────────────────────────────────────────────────
     incidents = _build_incidents(df, len(df))
 
+    # ── Corporate Accountability Index ────────────────────────────────────────
+    accountability = _build_accountability(df)
+
     # ── Assemble and write ────────────────────────────────────────────────────
     data = {
         "kpi": kpi,
@@ -157,6 +160,7 @@ def main():
         "groupTimeSeries": {"years": ts_years, "series": group_series},
         "ml": ml_data,
         "incidents": incidents,
+        "accountability": accountability,
     }
 
     js = "(function () {\n  \"use strict\";\n  window.DATA = " + json.dumps(data, indent=2, ensure_ascii=False) + ";\n  window.DB = buildHelpers(window.DATA);\n})();\n"
@@ -168,6 +172,91 @@ def main():
     with open(OUT_PATH, "w", encoding="utf-8") as f:
         f.write(js)
     print(f"Written: {OUT_PATH}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Corporate Accountability Index
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _build_accountability(df):
+    RESPONSE_SCORE = {
+        "public apology": 4,
+        "product recall": 3, "system termination": 3, "programme termination": 3,
+        "project termination": 3, "contract termination": 3, "product termination": 3,
+        "leadership/employee termination": 3, "company closure": 3,
+        "system suspension": 2, "policy update": 2, "policy review/update": 2,
+        "third-party audit": 2, "algorithmic grades scrapped": 2,
+        "product/service review & update": 2, "system re-development": 2,
+        "system review/update": 1, "system updates": 1, "system update": 1,
+        "content/data removal": 1, "dataset removal": 1, "content removal": 1,
+        "content takedown": 1, "account terminations": 1,
+    }
+    CONSEQUENCE_SCORE = {
+        "incarceration": 5, "incarceration; litigation": 5,
+        "litigation; fine/settlement": 4, "fine/settlement; litigation": 4,
+        "regulatory investigation; fine/settlement": 4, "fine/settlement; regulatory investigation": 4,
+        "litigation": 4, "fine/settlement": 4,
+        "regulatory investigation; litigation": 3, "litigation; regulatory investigation": 3,
+        "government investigation": 3, "police investigation": 3, "police investigation/action": 3,
+        "regulatory investigation": 2, "regulatory investigation/action": 2,
+        "legislative complaint/investigation": 2, "legislation introduction/update": 2,
+        "legal warning": 1, "regulatory warning": 1, "legal complaint": 1,
+        "regulatory complaint": 1, "legislators letter": 1, "regulatory inquiry": 1,
+    }
+
+    def _max_score(val, score_map):
+        if pd.isna(val) or str(val).strip() == "":
+            return 0
+        parts = [p.strip().lower() for p in str(val).split(";")]
+        best = 0
+        for p in parts:
+            if p in score_map:
+                best = max(best, score_map[p])
+            else:
+                for key, sc in score_map.items():
+                    if key in p:
+                        best = max(best, sc)
+                        break
+                else:
+                    best = max(best, 1)
+        return best
+
+    records = []
+    for _, row in df.iterrows():
+        devs = parse_multi(row.get("Developer", ""))
+        if not devs:
+            devs = ["Unknown"]
+        resp_score = _max_score(row.get("Response"), RESPONSE_SCORE)
+        cons_score = _max_score(row.get("Consequence"), CONSEQUENCE_SCORE)
+        is_silent = pd.isna(row.get("Response")) or str(row.get("Response", "")).strip() == ""
+        for dev in devs:
+            records.append({"dev": dev, "resp": resp_score, "cons": cons_score, "silent": is_silent})
+
+    recs = pd.DataFrame(records)
+    companies = []
+    for dev, grp in recs.groupby("dev"):
+        if dev in ("Unknown", ""):
+            continue
+        n = len(grp)
+        if n < 3:
+            continue
+        companies.append({
+            "name": dev,
+            "incidents": n,
+            "silenceRate": round(float(grp["silent"].mean()), 3),
+            "avgResponseScore": round(float(grp["resp"].mean()), 3),
+            "avgConsequenceScore": round(float(grp["cons"].mean()), 3),
+        })
+
+    qualified = [c for c in companies if c["incidents"] >= 5]
+    top_accountable = sorted(qualified, key=lambda x: x["avgResponseScore"], reverse=True)[:15]
+    top_silent = sorted(qualified, key=lambda x: x["silenceRate"], reverse=True)[:15]
+
+    return {
+        "topAccountable": top_accountable,
+        "topSilent": top_silent,
+        "scatter": sorted(companies, key=lambda x: x["incidents"], reverse=True),
+    }
 
 
 # ─────────────────────────────────────────────────────────────────────────────

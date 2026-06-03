@@ -13,7 +13,8 @@ const NAV = [
   { id: "browser",     num: "03", label: "Incident Browser" },
   { id: "harmed",      num: "04", label: "Who Gets Harmed" },
   { id: "ml",          num: "05", label: "ML Performance" },
-  { id: "compare",     num: "06", label: "Comparative Analysis" }
+  { id: "compare",        num: "06", label: "Comparative Analysis" },
+  { id: "accountability", num: "07", label: "Corporate Accountability" }
 ];
 
 function Sidebar({ page, onNav }) {

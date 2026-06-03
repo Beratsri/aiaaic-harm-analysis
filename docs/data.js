@@ -76830,7 +76830,1023 @@
         "Students"
       ]
     }
-  ]
+  ],
+  "accountability": {
+    "topAccountable": [
+      {
+        "name": "IBM",
+        "incidents": 11,
+        "silenceRate": 0.545,
+        "avgResponseScore": 0.818,
+        "avgConsequenceScore": 1.364
+      },
+      {
+        "name": "Character.AI",
+        "incidents": 14,
+        "silenceRate": 0.643,
+        "avgResponseScore": 0.714,
+        "avgConsequenceScore": 1.0
+      },
+      {
+        "name": "Huawei",
+        "incidents": 13,
+        "silenceRate": 0.615,
+        "avgResponseScore": 0.692,
+        "avgConsequenceScore": 0.538
+      },
+      {
+        "name": "University of Oxford",
+        "incidents": 6,
+        "silenceRate": 0.5,
+        "avgResponseScore": 0.667,
+        "avgConsequenceScore": 0.5
+      },
+      {
+        "name": "Waymo",
+        "incidents": 15,
+        "silenceRate": 0.733,
+        "avgResponseScore": 0.667,
+        "avgConsequenceScore": 0.867
+      },
+      {
+        "name": "YouTube",
+        "incidents": 15,
+        "silenceRate": 0.333,
+        "avgResponseScore": 0.667,
+        "avgConsequenceScore": 1.467
+      },
+      {
+        "name": "UK Home Office",
+        "incidents": 5,
+        "silenceRate": 0.8,
+        "avgResponseScore": 0.6,
+        "avgConsequenceScore": 0.8
+      },
+      {
+        "name": "Instagram",
+        "incidents": 11,
+        "silenceRate": 0.545,
+        "avgResponseScore": 0.545,
+        "avgConsequenceScore": 1.0
+      },
+      {
+        "name": "Facewatch",
+        "incidents": 8,
+        "silenceRate": 0.875,
+        "avgResponseScore": 0.5,
+        "avgConsequenceScore": 0.625
+      },
+      {
+        "name": "General Motors/Cruise LLC",
+        "incidents": 10,
+        "silenceRate": 0.7,
+        "avgResponseScore": 0.5,
+        "avgConsequenceScore": 0.8
+      },
+      {
+        "name": "ByteDance/TikTok",
+        "incidents": 26,
+        "silenceRate": 0.692,
+        "avgResponseScore": 0.462,
+        "avgConsequenceScore": 1.077
+      },
+      {
+        "name": "Meta",
+        "incidents": 111,
+        "silenceRate": 0.667,
+        "avgResponseScore": 0.45,
+        "avgConsequenceScore": 0.631
+      },
+      {
+        "name": "Proctorio",
+        "incidents": 7,
+        "silenceRate": 0.857,
+        "avgResponseScore": 0.429,
+        "avgConsequenceScore": 1.286
+      },
+      {
+        "name": "Google",
+        "incidents": 142,
+        "silenceRate": 0.69,
+        "avgResponseScore": 0.415,
+        "avgConsequenceScore": 0.944
+      },
+      {
+        "name": "Snap Inc",
+        "incidents": 8,
+        "silenceRate": 0.625,
+        "avgResponseScore": 0.375,
+        "avgConsequenceScore": 0.75
+      }
+    ],
+    "topSilent": [
+      {
+        "name": "DeepSeek Artificial Intelligence Co",
+        "incidents": 6,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.667
+      },
+      {
+        "name": "Evolv Technology",
+        "incidents": 7,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.143
+      },
+      {
+        "name": "Government of China",
+        "incidents": 6,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Luka Inc",
+        "incidents": 7,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.714
+      },
+      {
+        "name": "Mistral",
+        "incidents": 7,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.143
+      },
+      {
+        "name": "Perplexity AI",
+        "incidents": 12,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 1.417
+      },
+      {
+        "name": "SoundThinking",
+        "incidents": 10,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.5
+      },
+      {
+        "name": "Starship Technologies",
+        "incidents": 11,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Suno",
+        "incidents": 6,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.667
+      },
+      {
+        "name": "Synthesia",
+        "incidents": 8,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.125
+      },
+      {
+        "name": "Turnitin",
+        "incidents": 5,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "UnitedHealth Group",
+        "incidents": 6,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 3.0
+      },
+      {
+        "name": "X Corp",
+        "incidents": 11,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Adobe",
+        "incidents": 12,
+        "silenceRate": 0.917,
+        "avgResponseScore": 0.083,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "OpenAI",
+        "incidents": 236,
+        "silenceRate": 0.903,
+        "avgResponseScore": 0.148,
+        "avgConsequenceScore": 0.669
+      }
+    ],
+    "scatter": [
+      {
+        "name": "OpenAI",
+        "incidents": 236,
+        "silenceRate": 0.903,
+        "avgResponseScore": 0.148,
+        "avgConsequenceScore": 0.669
+      },
+      {
+        "name": "Google",
+        "incidents": 142,
+        "silenceRate": 0.69,
+        "avgResponseScore": 0.415,
+        "avgConsequenceScore": 0.944
+      },
+      {
+        "name": "Meta",
+        "incidents": 111,
+        "silenceRate": 0.667,
+        "avgResponseScore": 0.45,
+        "avgConsequenceScore": 0.631
+      },
+      {
+        "name": "Amazon",
+        "incidents": 74,
+        "silenceRate": 0.838,
+        "avgResponseScore": 0.284,
+        "avgConsequenceScore": 0.838
+      },
+      {
+        "name": "Tesla",
+        "incidents": 73,
+        "silenceRate": 0.836,
+        "avgResponseScore": 0.205,
+        "avgConsequenceScore": 1.918
+      },
+      {
+        "name": "Microsoft",
+        "incidents": 70,
+        "silenceRate": 0.829,
+        "avgResponseScore": 0.214,
+        "avgConsequenceScore": 0.671
+      },
+      {
+        "name": "xAI",
+        "incidents": 49,
+        "silenceRate": 0.796,
+        "avgResponseScore": 0.265,
+        "avgConsequenceScore": 0.633
+      },
+      {
+        "name": "ByteDance/TikTok",
+        "incidents": 26,
+        "silenceRate": 0.692,
+        "avgResponseScore": 0.462,
+        "avgConsequenceScore": 1.077
+      },
+      {
+        "name": "Apple",
+        "incidents": 25,
+        "silenceRate": 0.8,
+        "avgResponseScore": 0.32,
+        "avgConsequenceScore": 0.8
+      },
+      {
+        "name": "Anthropic",
+        "incidents": 24,
+        "silenceRate": 0.792,
+        "avgResponseScore": 0.25,
+        "avgConsequenceScore": 0.542
+      },
+      {
+        "name": "Midjourney",
+        "incidents": 19,
+        "silenceRate": 0.842,
+        "avgResponseScore": 0.158,
+        "avgConsequenceScore": 0.474
+      },
+      {
+        "name": "Uber",
+        "incidents": 17,
+        "silenceRate": 0.824,
+        "avgResponseScore": 0.294,
+        "avgConsequenceScore": 0.882
+      },
+      {
+        "name": "Waymo",
+        "incidents": 15,
+        "silenceRate": 0.733,
+        "avgResponseScore": 0.667,
+        "avgConsequenceScore": 0.867
+      },
+      {
+        "name": "YouTube",
+        "incidents": 15,
+        "silenceRate": 0.333,
+        "avgResponseScore": 0.667,
+        "avgConsequenceScore": 1.467
+      },
+      {
+        "name": "Character.AI",
+        "incidents": 14,
+        "silenceRate": 0.643,
+        "avgResponseScore": 0.714,
+        "avgConsequenceScore": 1.0
+      },
+      {
+        "name": "Clearview AI",
+        "incidents": 14,
+        "silenceRate": 0.857,
+        "avgResponseScore": 0.214,
+        "avgConsequenceScore": 2.0
+      },
+      {
+        "name": "Huawei",
+        "incidents": 13,
+        "silenceRate": 0.615,
+        "avgResponseScore": 0.692,
+        "avgConsequenceScore": 0.538
+      },
+      {
+        "name": "Stability AI",
+        "incidents": 13,
+        "silenceRate": 0.846,
+        "avgResponseScore": 0.231,
+        "avgConsequenceScore": 0.615
+      },
+      {
+        "name": "Adobe",
+        "incidents": 12,
+        "silenceRate": 0.917,
+        "avgResponseScore": 0.083,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Perplexity AI",
+        "incidents": 12,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 1.417
+      },
+      {
+        "name": "IBM",
+        "incidents": 11,
+        "silenceRate": 0.545,
+        "avgResponseScore": 0.818,
+        "avgConsequenceScore": 1.364
+      },
+      {
+        "name": "Instagram",
+        "incidents": 11,
+        "silenceRate": 0.545,
+        "avgResponseScore": 0.545,
+        "avgConsequenceScore": 1.0
+      },
+      {
+        "name": "LAION",
+        "incidents": 11,
+        "silenceRate": 0.727,
+        "avgResponseScore": 0.273,
+        "avgConsequenceScore": 0.636
+      },
+      {
+        "name": "PimEyes",
+        "incidents": 11,
+        "silenceRate": 0.818,
+        "avgResponseScore": 0.182,
+        "avgConsequenceScore": 0.636
+      },
+      {
+        "name": "Starship Technologies",
+        "incidents": 11,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "X Corp",
+        "incidents": 11,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "General Motors/Cruise LLC",
+        "incidents": 10,
+        "silenceRate": 0.7,
+        "avgResponseScore": 0.5,
+        "avgConsequenceScore": 0.8
+      },
+      {
+        "name": "SoundThinking",
+        "incidents": 10,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.5
+      },
+      {
+        "name": "ElevenLabs",
+        "incidents": 9,
+        "silenceRate": 0.889,
+        "avgResponseScore": 0.111,
+        "avgConsequenceScore": 0.444
+      },
+      {
+        "name": "Facewatch",
+        "incidents": 8,
+        "silenceRate": 0.875,
+        "avgResponseScore": 0.5,
+        "avgConsequenceScore": 0.625
+      },
+      {
+        "name": "Snap Inc",
+        "incidents": 8,
+        "silenceRate": 0.625,
+        "avgResponseScore": 0.375,
+        "avgConsequenceScore": 0.75
+      },
+      {
+        "name": "Synthesia",
+        "incidents": 8,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.125
+      },
+      {
+        "name": "Evolv Technology",
+        "incidents": 7,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.143
+      },
+      {
+        "name": "Luka Inc",
+        "incidents": 7,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.714
+      },
+      {
+        "name": "Metropolitan Police Service (MPS)",
+        "incidents": 7,
+        "silenceRate": 0.857,
+        "avgResponseScore": 0.286,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Mistral",
+        "incidents": 7,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.143
+      },
+      {
+        "name": "NtechLab",
+        "incidents": 7,
+        "silenceRate": 0.857,
+        "avgResponseScore": 0.143,
+        "avgConsequenceScore": 0.571
+      },
+      {
+        "name": "Proctorio",
+        "incidents": 7,
+        "silenceRate": 0.857,
+        "avgResponseScore": 0.429,
+        "avgConsequenceScore": 1.286
+      },
+      {
+        "name": "Tools for Humanity/Worldcoin",
+        "incidents": 7,
+        "silenceRate": 0.857,
+        "avgResponseScore": 0.286,
+        "avgConsequenceScore": 1.0
+      },
+      {
+        "name": "China Electronics Technology Group/Hikvision",
+        "incidents": 6,
+        "silenceRate": 0.833,
+        "avgResponseScore": 0.333,
+        "avgConsequenceScore": 0.167
+      },
+      {
+        "name": "DeepSeek Artificial Intelligence Co",
+        "incidents": 6,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.667
+      },
+      {
+        "name": "EleutherAI",
+        "incidents": 6,
+        "silenceRate": 0.833,
+        "avgResponseScore": 0.167,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Government of China",
+        "incidents": 6,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "NVIDIA",
+        "incidents": 6,
+        "silenceRate": 0.833,
+        "avgResponseScore": 0.167,
+        "avgConsequenceScore": 0.333
+      },
+      {
+        "name": "Suno",
+        "incidents": 6,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.667
+      },
+      {
+        "name": "UnitedHealth Group",
+        "incidents": 6,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 3.0
+      },
+      {
+        "name": "University of Oxford",
+        "incidents": 6,
+        "silenceRate": 0.5,
+        "avgResponseScore": 0.667,
+        "avgConsequenceScore": 0.5
+      },
+      {
+        "name": "NEC",
+        "incidents": 5,
+        "silenceRate": 0.8,
+        "avgResponseScore": 0.2,
+        "avgConsequenceScore": 1.6
+      },
+      {
+        "name": "Turnitin",
+        "incidents": 5,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "UC Berkeley",
+        "incidents": 5,
+        "silenceRate": 0.8,
+        "avgResponseScore": 0.2,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "UK Home Office",
+        "incidents": 5,
+        "silenceRate": 0.8,
+        "avgResponseScore": 0.6,
+        "avgConsequenceScore": 0.8
+      },
+      {
+        "name": "Amazon/AWS",
+        "incidents": 4,
+        "silenceRate": 0.75,
+        "avgResponseScore": 0.25,
+        "avgConsequenceScore": 0.25
+      },
+      {
+        "name": "Customs and Border Protection",
+        "incidents": 4,
+        "silenceRate": 0.75,
+        "avgResponseScore": 0.25,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "EssilorLuxottica",
+        "incidents": 4,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "HeyGen",
+        "incidents": 4,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Knightscope",
+        "incidents": 4,
+        "silenceRate": 0.5,
+        "avgResponseScore": 1.25,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "MIT",
+        "incidents": 4,
+        "silenceRate": 0.75,
+        "avgResponseScore": 0.25,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Megvii",
+        "incidents": 4,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Optum",
+        "incidents": 4,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 3.5
+      },
+      {
+        "name": "Palantir",
+        "incidents": 4,
+        "silenceRate": 0.25,
+        "avgResponseScore": 2.25,
+        "avgConsequenceScore": 1.25
+      },
+      {
+        "name": "Prisma Labs",
+        "incidents": 4,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 1.0
+      },
+      {
+        "name": "Runway",
+        "incidents": 4,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Spotify",
+        "incidents": 4,
+        "silenceRate": 0.75,
+        "avgResponseScore": 0.25,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Tencent/WeChat",
+        "incidents": 4,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "VRChat",
+        "incidents": 4,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Volaris Group/Equivant/Northpointe",
+        "incidents": 4,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 3.0
+      },
+      {
+        "name": "Wuhan University",
+        "incidents": 4,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Yaroslav Goncharov",
+        "incidents": 4,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Zhejiang Dahua Technology",
+        "incidents": 4,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.25
+      },
+      {
+        "name": "AI/Robotics Venture Strategy 3",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 3.333
+      },
+      {
+        "name": "Airbnb/Trooly",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.333
+      },
+      {
+        "name": "Amazon/Ring",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 1.667
+      },
+      {
+        "name": "Baidu",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Cardinal Health",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 2.667
+      },
+      {
+        "name": "DataWorks Plus",
+        "incidents": 3,
+        "silenceRate": 0.0,
+        "avgResponseScore": 2.0,
+        "avgConsequenceScore": 4.0
+      },
+      {
+        "name": "DeepSeek",
+        "incidents": 3,
+        "silenceRate": 0.667,
+        "avgResponseScore": 0.333,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Deloitte",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 1.333
+      },
+      {
+        "name": "Emily Putnam-Hornstein",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.667
+      },
+      {
+        "name": "European Dynamics",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 2.667
+      },
+      {
+        "name": "FaceFirst",
+        "incidents": 3,
+        "silenceRate": 0.0,
+        "avgResponseScore": 2.333,
+        "avgConsequenceScore": 0.667
+      },
+      {
+        "name": "Federal Bureau of Investigation (FBI)",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 1.667
+      },
+      {
+        "name": "Geolitica/PredPol",
+        "incidents": 3,
+        "silenceRate": 0.667,
+        "avgResponseScore": 1.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Google/Deepmind",
+        "incidents": 3,
+        "silenceRate": 0.667,
+        "avgResponseScore": 1.0,
+        "avgConsequenceScore": 1.333
+      },
+      {
+        "name": "Government of Russia",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Home Office DACC",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Honorlock",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 1.333
+      },
+      {
+        "name": "Instacart",
+        "incidents": 3,
+        "silenceRate": 0.667,
+        "avgResponseScore": 1.0,
+        "avgConsequenceScore": 0.333
+      },
+      {
+        "name": "Irene de Haan",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.667
+      },
+      {
+        "name": "Live Nation/Ticketmaster",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.667
+      },
+      {
+        "name": "Lyft",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Manchester Metropolitan University",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 2.667
+      },
+      {
+        "name": "Marianne Bitler",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.667
+      },
+      {
+        "name": "Meazure Learning/ProctorU",
+        "incidents": 3,
+        "silenceRate": 0.667,
+        "avgResponseScore": 0.333,
+        "avgConsequenceScore": 0.333
+      },
+      {
+        "name": "Michal Kosinski",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Microsoft/MSN",
+        "incidents": 3,
+        "silenceRate": 0.667,
+        "avgResponseScore": 0.333,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Ministry of the Interior",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Motorola Solutions/Vigilant Solutions",
+        "incidents": 3,
+        "silenceRate": 0.667,
+        "avgResponseScore": 0.667,
+        "avgConsequenceScore": 0.333
+      },
+      {
+        "name": "NHS Digital",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Nan Jiang",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.667
+      },
+      {
+        "name": "Naver",
+        "incidents": 3,
+        "silenceRate": 0.667,
+        "avgResponseScore": 0.333,
+        "avgConsequenceScore": 2.667
+      },
+      {
+        "name": "Particle Media/NewsBreak",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Peter Steinberger",
+        "incidents": 3,
+        "silenceRate": 0.667,
+        "avgResponseScore": 0.333,
+        "avgConsequenceScore": 0.333
+      },
+      {
+        "name": "Rhema Vaithianathan",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.667
+      },
+      {
+        "name": "SAS",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "SeniorMetrix",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 2.667
+      },
+      {
+        "name": "Stanford University",
+        "incidents": 3,
+        "silenceRate": 0.333,
+        "avgResponseScore": 1.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Tencent",
+        "incidents": 3,
+        "silenceRate": 0.667,
+        "avgResponseScore": 0.333,
+        "avgConsequenceScore": 1.333
+      },
+      {
+        "name": "Tim Maloney",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.667
+      },
+      {
+        "name": "Tools for Humanity",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.333
+      },
+      {
+        "name": "UK Cabinet Office",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Uber/Uber Eats",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Utah Administrative Office of the Courts",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 0.0
+      },
+      {
+        "name": "Xiaomi",
+        "incidents": 3,
+        "silenceRate": 1.0,
+        "avgResponseScore": 0.0,
+        "avgConsequenceScore": 1.0
+      },
+      {
+        "name": "iFlytek",
+        "incidents": 3,
+        "silenceRate": 0.667,
+        "avgResponseScore": 0.333,
+        "avgConsequenceScore": 0.333
+      }
+    ]
+  }
 };
   window.DB = buildHelpers(window.DATA);
 })();

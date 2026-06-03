@@ -8,7 +8,8 @@ function App() {
 
   const Pages = {
     home: window.HomePage, overview: window.OverviewPage, companies: window.CompaniesPage,
-    browser: window.BrowserPage, harmed: window.HarmedPage, ml: window.MLPage, compare: window.ComparePage
+    browser: window.BrowserPage, harmed: window.HarmedPage, ml: window.MLPage,
+    compare: window.ComparePage, accountability: window.AccountabilityPage
   };
   const Current = Pages[page] || window.HomePage;
 
