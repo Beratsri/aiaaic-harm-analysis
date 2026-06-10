@@ -2,6 +2,8 @@
 
 A structured re-analysis of the [AIAAIC database](https://www.aiaaic.org/aiaaic-repository) (2,247 AI incidents, 2008–2026). Machine learning models fill the critical harm fields that are blank in the majority of raw records, and the results are presented in an interactive research dashboard.
 
+**Live dashboard:** https://beratsri.github.io/aiaaic-harm-analysis/
+
 ---
 
 ## How it works
@@ -10,21 +12,21 @@ A structured re-analysis of the [AIAAIC database](https://www.aiaaic.org/aiaaic-
 AIAAIC_Repository.xlsx
         │
         ▼
- src/data_cleaning.py          ──▶  data/interim/aiaaic_clean.csv
+ src/data_cleaning.py                  ──▶  data/interim/aiaaic_clean.csv
         │
         ▼
  notebooks/03_harm_classifier.ipynb    ──▶  models/harm_individual_clf.joblib
- notebooks/04_affected_party.ipynb     ──▶  models/harm_societal_clf.joblib
-                                            models/affected_party_clf.joblib
+                                            models/harm_societal_clf.joblib
+ notebooks/04_affected_party.ipynb     ──▶  models/affected_party_clf.joblib
         │
         ▼
  notebooks/05_final_analysis.ipynb     ──▶  data/processed/aiaaic_enriched.csv
         │
         ▼
- scripts/generate_web_data.py          ──▶  web/data.js
+ scripts/generate_web_data.py          ──▶  web/data.js  (copy to docs/data.js)
         │
         ▼
- web/index.html  ◀──  web/*.jsx / app.css
+ docs/index.html  ◀──  docs/*.jsx / app.css
         │
         ▼
   http://localhost:8502
@@ -34,9 +36,9 @@ AIAAIC_Repository.xlsx
 
 | Model | Task | Training data | Missing rate |
 |---|---|---|---|
-| `harm_individual_clf` | Predict individual-level harm types | ~36% of records | 64% |
-| `harm_societal_clf` | Predict societal-level harm types | ~40% of records | 60% |
-| `affected_party_clf` | Classify affected community group | 300 manually labelled records | 100% (new field) |
+| `harm_individual_clf` | Predict individual-level harm types | ~36% of records (original labels) | 64% |
+| `harm_societal_clf` | Predict societal-level harm types | ~40% of records (original labels) | 60% |
+| `affected_party_clf` | Classify affected community group | 2,247 keyword-labelled records, seeded by ~300 manual annotations (weak supervision) | 100% (new field) |
 
 ---
 
@@ -48,7 +50,7 @@ AIAAIC_Repository.xlsx
 │   │   └── AIAAIC_Repository.xlsx        # Original dataset (not pushed to git)
 │   ├── interim/
 │   │   ├── aiaaic_clean.csv              # Cleaned dataset
-│   │   ├── manual_labels.csv             # 300 hand-labelled affected-party records
+│   │   ├── manual_labels.csv             # Affected-party labels (keyword rule + manual seed)
 │   │   └── scraped_text.csv              # Supplementary scraped article text
 │   └── processed/
 │       └── aiaaic_enriched.csv           # Final ML-enriched dataset
@@ -77,19 +79,17 @@ AIAAIC_Repository.xlsx
 ├── scripts/
 │   └── generate_web_data.py              # Converts enriched CSV → web/data.js
 │
-├── web/                                  # Interactive dashboard
+├── docs/                                 # Interactive dashboard (GitHub Pages)
 │   ├── index.html
 │   ├── app.css
 │   ├── data.js                           # Generated — do not edit by hand
 │   ├── charts.jsx                        # Plotly chart components
 │   ├── ui.jsx                            # Shared UI primitives
 │   ├── pages_a.jsx                       # Home, Overview, Company Profiles
-│   ├── pages_b.jsx                       # Incident Browser, Who Gets Harmed, ML, Compare
+│   ├── pages_b.jsx                       # Incident Browser, Who Gets Harmed, ML, Compare, Accountability
 │   └── main.jsx                          # App shell & routing
 │
-├── reports/
-│   └── final_report.md                   # Academic report
-│
+├── final_report.pdf                      # Academic report
 └── requirements.txt
 ```
 
@@ -128,18 +128,19 @@ jupyter nbconvert --to notebook --execute --inplace notebooks/03_harm_classifier
 jupyter nbconvert --to notebook --execute --inplace notebooks/04_affected_party.ipynb
 jupyter nbconvert --to notebook --execute --inplace notebooks/05_final_analysis.ipynb
 
-# Generate the dashboard data file
+# Generate the dashboard data file and copy it to the dashboard folder
 python3 scripts/generate_web_data.py
+cp web/data.js docs/data.js
 ```
 
 ### 4. Open the dashboard
 
 ```bash
-cd web && python3 -m http.server 8502
+cd docs && python3 -m http.server 8502
 ```
 
 Open **http://localhost:8502** in your browser
-or simply on **https://beratsri.github.io/aiaaic-harm-analysis/**
+or simply visit **https://beratsri.github.io/aiaaic-harm-analysis/**
 
 > The dashboard requires a local HTTP server — opening `index.html` directly as a file will not work.
 
@@ -155,16 +156,17 @@ or simply on **https://beratsri.github.io/aiaaic-harm-analysis/**
 | 03 | Incident Browser | Searchable, filterable record inspector with provenance |
 | 04 | Who Gets Harmed | Demographic load, sector × group heatmap, time trends |
 | 05 | ML Performance | Per-model and per-class F1, precision, recall |
-| 06 | Comparative Analysis | Side-by-side radar and timeline for any two entities |
+| 06 | Comparative Analysis | Side-by-side timeline and harm radar for any two entities |
+| 07 | Corporate Accountability | Response scores, silence rates, corporate silence map |
 
 ---
 
 ## Key findings
 
-- **Sector concentration** — Chi-square test shows a statistically significant link between deployment sector and which group is harmed (*p* < 0.0001).
-- **Developer oligopoly** — Top 5 developers account for 34 %+ of all incidents; OpenAI leads at 10.5 %.
-- **Enforcement gap** — 74 %+ of incidents have no documented legal consequence.
-- **Generative AI surge** — Incidents involving generative AI (LLM, image generation) roughly doubled each year from 2022–2024.
+- **Sector concentration** — Chi-square test shows a strong link between deployment sector and which group is harmed (χ² = 6,269, *p* < 0.0001; descriptive — see report limitations).
+- **Developer oligopoly** — Top 5 developers (OpenAI, Google, Meta, Amazon, Tesla) account for 28.3% of all incidents; OpenAI leads at 10.5%.
+- **Enforcement gap** — 74%+ of incidents have no documented legal consequence, and 78%+ get no corporate response.
+- **Generative AI surge** — Generative-AI incidents jumped from 9 in 2022 to 150+ per year from 2023 onward (~40% of all recent incidents).
 
 ---
 
@@ -172,18 +174,8 @@ or simply on **https://beratsri.github.io/aiaaic-harm-analysis/**
 
 | Model | Macro F1 | Micro F1 |
 |---|---|---|
-| Individual Harm Classifier | 0.493 | 0.604 |
-| Societal Harm Classifier | 0.502 | 0.565 |
-| Affected Party Classifier | 0.643 | 0.691 |
+| Individual Harm Classifier | 0.525 | 0.611 |
+| Societal Harm Classifier | 0.518 | 0.584 |
+| Affected Party Classifier | 0.579 | 0.644 |
 
-All predicted values are flagged separately in the dashboard — original AIAAIC labels and ML-imputed labels are always visually distinct.
-
----
-
-## References
-
-Agarwal, A., & Nene, M. J. (2025). *Standardised schema and taxonomy for AI incident databases.* arXiv:2501.17037  
-Slattery, P. et al. (2024). *The AI Risk Repository.* arXiv:2408.12622  
-Eubanks, V. (2018). *Automating Inequality.* St. Martin's Press  
-Benjamin, R. (2019). *Race After Technology.* Polity Press  
-Noble, S. U. (2018). *Algorithms of Oppression.* NYU Press
+All predicted values are flagged separately in the dashboard — original AIAAIC labels and ML-imputed labels are always visually distinct. The Affected Party classifier is evaluated against weakly-supervised (keyword-derived) labels; see the report for details.
