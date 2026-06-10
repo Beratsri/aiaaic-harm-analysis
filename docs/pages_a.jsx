@@ -17,13 +17,13 @@ function HomePage() {
           <KPI label="Total incidents" value={fmt(d.kpi.totalIncidents)} meta="AI controversies catalogued" />
           <KPI label="Unique developers" value={fmt(d.kpi.uniqueDevelopers)} meta="Distinct organisations" accent="var(--oxblood)" />
           <KPI label="Affected jurisdictions" value={fmt(d.kpi.uniqueCountries)} meta="Countries represented" accent="var(--ochre)" />
-          <KPI label="Period covered" value={d.kpi.yearMin + "–" + d.kpi.yearMax} meta="18 years of records" accent="var(--moss)" />
+          <KPI label="Period covered" value={d.kpi.yearMin + "–" + d.kpi.yearMax} meta={(d.kpi.yearMax - d.kpi.yearMin + 1) + " years of records"} accent="var(--moss)" />
         </div>
       </Section>
 
       <Section>
         <div className="grid" style={{ gridTemplateColumns: "1.05fr 1fr" }}>
-          <Card title="What this study does" sub="Agarwal & Nene, 2025">
+          <Card title="What this study does" sub="Study rationale">
             <div className="prose" style={{ fontSize: 15 }}>
               <p>The AIAAIC database is the most comprehensive open catalogue of AI, algorithmic and automation
                 controversies. It is also profoundly <em>incomplete</em>: the fields that matter most for accountability
@@ -161,7 +161,7 @@ function CompaniesPage() {
         <Card>
           <div className="table-wrap">
             <table className="data">
-              <thead><tr><th>ID</th><th>Date</th><th>Headline</th><th>Technology</th><th>Sector</th><th>Country</th></tr></thead>
+              <thead><tr><th>ID</th><th>Year</th><th>Headline</th><th>Technology</th><th>Sector</th><th>Country</th></tr></thead>
               <tbody>
                 {prof.incidents.map((r) => (
                   <tr key={r.id}>

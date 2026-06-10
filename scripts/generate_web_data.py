@@ -108,6 +108,27 @@ def main():
     # ── Group load ───────────────────────────────────────────────────────────
     group_load = [{"group": n, "count": c} for n, c in group_ctr.most_common(14)]
 
+    # ── Per-entity real timelines & harm fingerprints ────────────────────────
+    # Used by the Company Profiles and Compare pages. Timeline = actual yearly
+    # incident counts; radar = counts of the global top-6 individual harm types.
+    top6_harms = harm_types[:6]
+
+    def entity_stats(mask):
+        rows = df[mask]
+        yr_cnt = rows[rows["Year"].notna()].groupby("Year").size()
+        timeline = [int(yr_cnt.get(y, 0)) for y in years_list]
+        radar = [
+            int(rows["Harm_Individual_Final"].fillna("").apply(lambda x: h in parse_multi(x)).sum())
+            for h in top6_harms
+        ]
+        return timeline, radar
+
+    for entry, col in [(d, "Developer") for d in developers] + \
+                      [(s, "Sector") for s in sectors] + \
+                      [(c, "Country") for c in countries]:
+        mask = df[col].fillna("").apply(lambda x: entry["name"] in parse_multi(x))
+        entry["timeline"], entry["radar"] = entity_stats(mask)
+
     # ── Heatmap: sector × group ───────────────────────────────────────────────
     hm_sectors = [s["name"] for s in sectors[:8]]
     hm_groups = [g["group"] for g in group_load[:8]]
@@ -291,45 +312,25 @@ def _class_rows_from_joblib(joblib_path):
     return sorted(rows, key=lambda x: -x["f1"])
 
 
-def _synthetic_class_rows(labels, hi, lo):
-    rows = []
-    for i, lab in enumerate(labels):
-        t = hi - (i / max(len(labels) - 1, 1)) * (hi - lo)
-        p = round(min(0.95, max(0.25, t + (0.05 if i % 2 == 0 else -0.05))), 3)
-        r = round(min(0.95, max(0.25, t + (-0.04 if i % 2 == 0 else 0.04))), 3)
-        f = round(2 * p * r / (p + r) if (p + r) > 0 else 0, 3)
-        support = max(10, 400 - i * 28)
-        rows.append({"label": lab, "precision": p, "recall": r, "f1": f, "support": support})
-    return rows
-
-
 def _get_ml_metrics(df, harm_types, societal_harms, groups):
     print("  Loading ML metrics from saved models…")
 
     def load_model(path, title, algo):
-        try:
-            er, _ = _load_model_metrics(path)
-            classes = _class_rows_from_joblib(path)
-            return {
-                "title": title,
-                "algo": algo,
-                "metrics": {
-                    "macroF1":        round(er["macro_f1"], 3),
-                    "microF1":        round(er["micro_f1"], 3),
-                    "samplesF1":      round(er["samples_f1"], 3),
-                    "macroPrecision": round(er["macro_precision"], 3),
-                },
-                "classes": classes,
-            }
-        except Exception as e:
-            print(f"  Warning: could not load {path}: {e}")
-            fallback_classes = _synthetic_class_rows(harm_types, 0.60, 0.30)
-            return {
-                "title": title,
-                "algo": algo,
-                "metrics": {"macroF1": 0.49, "microF1": 0.60, "samplesF1": 0.58, "macroPrecision": 0.47},
-                "classes": fallback_classes,
-            }
+        # No fallback: if a model artefact is missing or unreadable we fail
+        # loudly rather than publish fabricated metrics.
+        er, _ = _load_model_metrics(path)
+        classes = _class_rows_from_joblib(path)
+        return {
+            "title": title,
+            "algo": algo,
+            "metrics": {
+                "macroF1":        round(er["macro_f1"], 3),
+                "microF1":        round(er["micro_f1"], 3),
+                "samplesF1":      round(er["samples_f1"], 3),
+                "macroPrecision": round(er["macro_precision"], 3),
+            },
+            "classes": classes,
+        }
 
     return {
         "order": ["Harm_Individual", "Harm_Societal", "Affected Party"],
@@ -360,15 +361,14 @@ def _get_ml_metrics(df, harm_types, societal_harms, groups):
 def _build_incidents(df, n):
     sample = df.dropna(subset=["Headline"]).head(n)
     out = []
-    for i, (_, row) in enumerate(sample.iterrows()):
-        yr = int(row["Year"]) if pd.notna(row["Year"]) else 2020
+    for _, row in sample.iterrows():
+        # AIAAIC records carry only a year — no day-level date is invented.
+        yr = int(row["Year"]) if pd.notna(row["Year"]) else None
         hi_raw = parse_multi(row.get("Harm_Individual_Final", ""))
         hs_raw = parse_multi(row.get("Harm_Societal_Final", ""))
         ap_raw = parse_multi(row.get("AffectedParty_Final", ""))
         hi_orig = set(parse_multi(row.get("Harm_Individual", "")))
         hs_orig = set(parse_multi(row.get("Harm_Societal", "")))
-        is_pred_i = bool(row.get("Harm_Individual_IsPredicted", False))
-        is_pred_s = bool(row.get("Harm_Societal_IsPredicted", False))
 
         hi_labels = [
             {"label": h, "source": "orig" if h in hi_orig else "pred"}
@@ -379,15 +379,15 @@ def _build_incidents(df, n):
             for h in hs_raw[:2] if h not in ("Other", "Unknown")
         ]
 
-        inc_id = str(row.get("ID", f"AIAAIC-{1480+i}"))
-        date_str = f"{yr}-01-01"
+        devs = parse_multi(row.get("Developer", ""))
 
         out.append({
-            "id": inc_id,
+            "id": str(row["ID"]),
             "year": yr,
-            "date": date_str,
+            "date": str(yr) if yr is not None else "—",
             "headline": str(row["Headline"]),
-            "developer": parse_multi(row.get("Developer", ""))[0] if parse_multi(row.get("Developer", "")) else "Unknown",
+            "developer": devs[0] if devs else "Unknown",
+            "developers": devs,
             "deployer": parse_multi(row.get("Deployer", ""))[0] if parse_multi(row.get("Deployer", "")) else "Unknown",
             "technology": parse_multi(row.get("Technology", ""))[0] if parse_multi(row.get("Technology", "")) else "Unknown",
             "purpose": str(row["Purpose"]) if pd.notna(row.get("Purpose")) else "—",
@@ -399,7 +399,7 @@ def _build_incidents(df, n):
             "harmsSocietal": hs_labels,
             "affectedParties": ap_raw[:3],
         })
-    out.sort(key=lambda x: x["date"], reverse=True)
+    out.sort(key=lambda x: x["year"] if x["year"] is not None else 0, reverse=True)
     return out
 
 
@@ -411,23 +411,19 @@ def _db_helpers_js():
     return """
 function buildHelpers(DATA) {
   var YEARS = DATA.years;
+  var ZERO_TIMELINE = YEARS.map(function(){ return 0; });
+  var ZERO_RADAR = DATA.harmTypes.slice(0, 6).map(function(){ return 0; });
 
   function companyProfile(name) {
     var dev = DATA.developers.find(function(d){ return d.name === name; }) || DATA.developers[0];
-    var wsum = 0;
-    var weights = YEARS.map(function(yr) {
-      var i = yr - YEARS[0];
-      var w = Math.pow(i / Math.max(YEARS.length - 1, 1), 1.5) + 0.04;
-      if (yr === 2023 || yr === 2024) w *= 1.8;
-      wsum += w;
-      return w;
-    });
+    // Real per-year counts precomputed from the enriched dataset
     var timeline = YEARS.map(function(yr, i) {
-      return { year: yr, count: Math.round(dev.count * weights[i] / wsum) };
+      return { year: yr, count: (dev.timeline || ZERO_TIMELINE)[i] || 0 };
     });
-    // harm breakdown from real incidents
-    var devInc = DATA.incidents.filter(function(r){ return r.developer === name; });
-    if (devInc.length < 4) devInc = DATA.incidents.slice(0, 8);
+    // Incidents where this developer appears anywhere in the developer list
+    var devInc = DATA.incidents.filter(function(r){
+      return (r.developers || []).indexOf(dev.name) >= 0;
+    });
     var harmCtr = {};
     devInc.forEach(function(r) {
       r.harmsIndividual.forEach(function(h) {
@@ -436,23 +432,25 @@ function buildHelpers(DATA) {
     });
     var harms = Object.keys(harmCtr).map(function(k){ return { label: k, value: harmCtr[k] }; })
       .sort(function(a,b){ return b.value - a.value; }).slice(0, 5);
-    var rows = devInc.slice(0, 8);
-    return { dev: dev, timeline: timeline, harms: harms, incidents: rows };
+    return { dev: dev, timeline: timeline, harms: harms, incidents: devInc.slice(0, 10) };
   }
 
   function groupProfile(group) {
     var grpInc = DATA.incidents.filter(function(r){
       return r.affectedParties.indexOf(group) >= 0;
     });
-    if (grpInc.length < 5) grpInc = DATA.incidents.slice(0, 8);
-    // top developers
+    // top developers (excluding records with no attributed developer)
     var devCtr = {};
-    grpInc.forEach(function(r){ devCtr[r.developer] = (devCtr[r.developer]||0)+1; });
+    grpInc.forEach(function(r){
+      if (r.developer !== "Unknown") devCtr[r.developer] = (devCtr[r.developer]||0)+1;
+    });
     var topDevs = Object.keys(devCtr).map(function(k){ return { name: k, count: devCtr[k] }; })
       .sort(function(a,b){ return b.count - a.count; }).slice(0, 10);
     // top tech
     var techCtr = {};
-    grpInc.forEach(function(r){ techCtr[r.technology] = (techCtr[r.technology]||0)+1; });
+    grpInc.forEach(function(r){
+      if (r.technology !== "Unknown") techCtr[r.technology] = (techCtr[r.technology]||0)+1;
+    });
     var topTech = Object.keys(techCtr).map(function(k){ return { name: k, count: techCtr[k] }; })
       .sort(function(a,b){ return b.count - a.count; }).slice(0, 10);
     var load = (DATA.groupLoad.find(function(g){ return g.group === group; }) || {}).count || 0;
@@ -460,30 +458,23 @@ function buildHelpers(DATA) {
   }
 
   function compareEntities(type, a, b) {
-    function totalFor(name) {
-      if (type === "Developers") { var d = DATA.developers.find(function(x){ return x.name===name; }); return d ? d.count : 60; }
-      if (type === "Sectors")    { var s = DATA.sectors.find(function(x){ return x.name===name; }); return s ? s.count : 100; }
-      var c = DATA.countries.find(function(x){ return x.name===name; }); return c ? c.count : 50;
-    }
-    function timelineFor(name) {
-      var tot = totalFor(name);
-      var wsum = 0;
-      var weights = YEARS.map(function(yr) {
-        var i = yr - YEARS[0];
-        var w = Math.pow(i / Math.max(YEARS.length - 1, 1), 1.4) + 0.05;
-        if (yr === 2023 || yr === 2024) w *= 1.7;
-        wsum += w; return w;
-      });
-      return YEARS.map(function(yr, i){ return Math.round(tot * weights[i] / wsum); });
-    }
-    function radarFor(name) {
-      var n = 0; for (var i=0; i<name.length; i++) n += name.charCodeAt(i)*(i+3);
-      return DATA.harmTypes.slice(0,6).map(function(_,i){ return Math.round(15 + ((n*(i+7)) % 70)); });
+    var list = type === "Developers" ? DATA.developers
+             : type === "Sectors"    ? DATA.sectors
+             : DATA.countries;
+    function entityFor(name) {
+      var e = list.find(function(x){ return x.name === name; });
+      if (!e) return { name: name, total: 0, timeline: ZERO_TIMELINE, radar: ZERO_RADAR };
+      return {
+        name: name,
+        total: e.count,
+        timeline: e.timeline || ZERO_TIMELINE,
+        radar: e.radar || ZERO_RADAR
+      };
     }
     return {
       type: type,
-      a: { name: a, total: totalFor(a), timeline: timelineFor(a), radar: radarFor(a) },
-      b: { name: b, total: totalFor(b), timeline: timelineFor(b), radar: radarFor(b) },
+      a: entityFor(a),
+      b: entityFor(b),
       radarAxes: DATA.harmTypes.slice(0, 6),
       years: YEARS
     };

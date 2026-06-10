@@ -46,7 +46,7 @@ function BrowserPage() {
         <Card>
           <div className="table-wrap" style={{ maxHeight: 420, overflowY: "auto" }}>
             <table className="data selectable">
-              <thead><tr><th>ID</th><th>Date</th><th>Headline</th><th>Developer</th><th>Sector</th><th>Country</th></tr></thead>
+              <thead><tr><th>ID</th><th>Year</th><th>Headline</th><th>Developer</th><th>Sector</th><th>Country</th></tr></thead>
               <tbody>
                 {rows.map((r) => (
                   <tr key={r.id} className={selId === r.id ? "sel" : ""} onClick={() => setSelId(r.id)}>
@@ -170,7 +170,7 @@ function HarmedPage() {
         <Card title="Most recent incidents" sub={`Affecting ${group}`}>
           <div className="table-wrap">
             <table className="data">
-              <thead><tr><th>Date</th><th>Headline</th><th>Developer</th><th>Sector</th></tr></thead>
+              <thead><tr><th>Year</th><th>Headline</th><th>Developer</th><th>Sector</th></tr></thead>
               <tbody>
                 {prof.incidents.map((r) => (
                   <tr key={r.id}>
@@ -263,7 +263,11 @@ function ComparePage() {
     Sectors: d.sectors.map((x) => x.name),
     Countries: d.countries.map((x) => x.name)
   };
-  const defaults = { Developers: ["OpenAI", "Google"], Sectors: ["Media & Information", "Law & Justice"], Countries: ["United States", "United Kingdom"] };
+  const defaults = {
+    Developers: [opts.Developers[0], opts.Developers[1]],
+    Sectors: [opts.Sectors[0], opts.Sectors[1]],
+    Countries: [opts.Countries[0], opts.Countries[1]]
+  };
   const [a, setA] = React.useState(defaults.Developers[0]);
   const [b, setB] = React.useState(defaults.Developers[1]);
 
