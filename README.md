@@ -1,5 +1,8 @@
 # AIAAIC ML-Enriched AI Incident Analysis
 
+[![Video on YouTube](https://img.shields.io/badge/Video-YouTube-FF0000?logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=U1CDrEFKws8)
+[![Video on Drive](https://img.shields.io/badge/Video-Google%20Drive-4285F4?logo=googledrive&logoColor=white)](https://drive.google.com/file/d/178NJuxaUbM-crRNzc5sRqfmJxpEsdt6U/view?usp=sharing)
+
 A structured re-analysis of the [AIAAIC database](https://www.aiaaic.org/aiaaic-repository) (2,247 AI incidents, 2008–2026). Machine learning models fill the critical harm fields that are blank in the majority of raw records, and the results are presented in an interactive research dashboard.
 
 **Live dashboard:** https://beratsri.github.io/aiaaic-harm-analysis/
